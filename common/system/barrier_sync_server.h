@@ -6,7 +6,6 @@
 #include "hooks_manager.h"
 
 #include <vector>
-#include <random>
 
 class CoreManager;
 
@@ -45,7 +44,6 @@ class BarrierSyncServer : public ClockSkewMinimizationServer
       void threadExit(HooksManager::ThreadTime *argument);
       void threadStall(HooksManager::ThreadStall *argument);
       void threadMigrate(HooksManager::ThreadMigrate *argument);
-      std::default_random_engine generator;
 
    public:
       BarrierSyncServer();

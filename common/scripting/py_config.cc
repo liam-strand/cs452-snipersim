@@ -17,7 +17,7 @@ getConfigString(PyObject *self, PyObject *args)
    else
       result = Sim()->getCfg()->getString(key);
 
-   return PyUnicode_FromString(result.c_str());
+   return PyString_FromString(result.c_str());
 }
 
 static PyObject *
@@ -75,7 +75,7 @@ getConfigBool(PyObject *self, PyObject *args)
 }
 
 
-static PyMethodDef PySniperConfigMethods[] = {
+static PyMethodDef PyConfigMethods[] = {
    {"get",  getConfigString, METH_VARARGS, "Get configuration variable."},
    {"get_int",  getConfigInt, METH_VARARGS, "Get configuration variable."},
    {"get_float",  getConfigFloat, METH_VARARGS, "Get configuration variable."},
@@ -83,26 +83,15 @@ static PyMethodDef PySniperConfigMethods[] = {
    {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
-static PyModuleDef PySniperConfigModule = {
-	PyModuleDef_HEAD_INIT,
-	"sim_config",
-	"",
-	-1,
-	PySniperConfigMethods,
-	NULL, NULL, NULL, NULL
-};
-
-PyMODINIT_FUNC PyInit_sim_config(void)
+void HooksPy::PyConfig::setup(void)
 {
-   PyObject *pModule = PyModule_Create(&PySniperConfigModule);
+   PyObject *pModule = Py_InitModule("sim_config", PyConfigMethods);
 
-   PyObject *pOutputdir = PyUnicode_FromString(Sim()->getConfig()->formatOutputFileName("").c_str());
+   PyObject *pOutputdir = PyString_FromString(Sim()->getConfig()->formatOutputFileName("").c_str());
    PyObject_SetAttrString(pModule, "output_dir", pOutputdir);
    Py_DECREF(pOutputdir);
 
-   PyObject *pNcores = PyLong_FromLong(Sim()->getConfig()->getApplicationCores());
+   PyObject *pNcores = PyInt_FromLong(Sim()->getConfig()->getApplicationCores());
    PyObject_SetAttrString(pModule, "ncores", pNcores);
    Py_DECREF(pNcores);
-
-   return pModule;
 }

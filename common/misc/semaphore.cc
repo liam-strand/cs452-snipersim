@@ -1,4 +1,4 @@
-#include "sem.h"
+#include "semaphore.h"
 #include "os_compat.h"
 
 #include <unistd.h>

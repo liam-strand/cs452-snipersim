@@ -59,16 +59,7 @@ static PyMethodDef PyMemMethods[] = {
    { NULL, NULL, 0, NULL } /* Sentinel */
 };
 
-static PyModuleDef PyMemModule = {
-	PyModuleDef_HEAD_INIT,
-	"sim_mem",
-	"",
-	-1,
-	PyMemMethods,
-	NULL, NULL, NULL, NULL
-};
-
-PyMODINIT_FUNC PyInit_sim_mem(void)
+void HooksPy::PyMem::setup(void)
 {
-   return PyModule_Create(&PyMemModule);
+   Py_InitModule("sim_mem", PyMemMethods);
 }

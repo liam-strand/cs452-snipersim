@@ -60,21 +60,11 @@ static PyMethodDef PyBbvMethods[] = {
    {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
-static PyModuleDef PyBbvModule = {
-	PyModuleDef_HEAD_INIT,
-	"sim_bbv",
-	"",
-	-1,
-	PyBbvMethods,
-	NULL, NULL, NULL, NULL
-};
-
-PyMODINIT_FUNC PyInit_sim_bbv(void)
+void HooksPy::PyBbv::setup(void)
 {
-   PyObject *pModule = PyModule_Create(&PyBbvModule);
+   PyObject *pModule = Py_InitModule("sim_bbv", PyBbvMethods);
 
-   PyObject *pGlobalConst = PyLong_FromLong(BbvCount::NUM_BBV);
+   PyObject *pGlobalConst = PyInt_FromLong(BbvCount::NUM_BBV);
    PyObject_SetAttrString(pModule, "BBV_SIZE", pGlobalConst);
    Py_DECREF(pGlobalConst);
-   return pModule;
 }

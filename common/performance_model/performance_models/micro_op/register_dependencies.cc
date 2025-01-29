@@ -1,8 +1,7 @@
 #include "register_dependencies.h"
 #include "dynamic_micro_op.h"
 
-RegisterDependencies::RegisterDependencies():
-	producers(Sim()->getDecoder()->last_reg())
+RegisterDependencies::RegisterDependencies()
 {
    clear();
 }
@@ -54,5 +53,8 @@ uint64_t RegisterDependencies::peekProducer(dl::Decoder::decoder_reg reg, uint64
 
 void RegisterDependencies::clear()
 {
-   std::fill(producers.begin(), producers.end(), INVALID_SEQNR);
+   for(uint32_t i = 0; i < Sim()->getDecoder()->last_reg(); i++)
+   {
+      producers[i] = INVALID_SEQNR;
+   }
 }

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <cassert>
-#include <cstdint>
 
 namespace dl
 {

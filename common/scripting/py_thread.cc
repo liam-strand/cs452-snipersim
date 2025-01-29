@@ -7,7 +7,7 @@
 static PyObject *
 getNthreads(PyObject *self, PyObject *args)
 {
-   return PyLong_FromLong(Sim()->getThreadManager()->getNumThreads());
+   return PyInt_FromLong(Sim()->getThreadManager()->getNumThreads());
 }
 
 static PyObject *
@@ -31,7 +31,7 @@ getThreadAppid(PyObject *self, PyObject *args)
       return NULL;
    }
 
-   return PyLong_FromLong(thread->getAppId());
+   return PyInt_FromLong(thread->getAppId());
 }
 
 static PyObject *
@@ -145,16 +145,7 @@ static PyMethodDef PyThreadMethods[] = {
    { NULL, NULL, 0, NULL } /* Sentinel */
 };
 
-static PyModuleDef PyThreadModule = {
-	PyModuleDef_HEAD_INIT,
-	"sim_thread",
-	"",
-	-1,
-	PyThreadMethods,
-	NULL, NULL, NULL, NULL
-};
-
-PyMODINIT_FUNC PyInit_sim_thread(void)
+void HooksPy::PyThread::setup(void)
 {
-   return PyModule_Create(&PyThreadModule);
+   Py_InitModule("sim_thread", PyThreadMethods);
 }
