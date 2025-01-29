@@ -1,3 +1,44 @@
+## Configuration
+
+The sniper ecosystem relies on two environment variables. `SNIPER_ROOT` must point
+at wherever the snipersim repo is cloned. For me, this is `/pool/yhe7443/sniper`.
+`BENCHMARK_ROOT` must point at wherever the benchmark repository is cloned. For
+me, this is `/pool/yhe7443/benchmark`.
+
+Building the benchmarks is a trememndous hassle, but building snipersim is pretty
+easy. So, I would recommend having your own clone of the sim, but using my version
+of the benchmarks.
+
+You'll probably want to put those environment variable definitions in `.profile`
+or similar.
+
+## Compilation
+
+To build sniper, `cd` into the sniper directory and run:
+
+```
+make USE_PIN=1 -j
+```
+
+## Running Benchmarks
+
+First `cd` into the benchmarks repository, then run
+
+```
+./run-sniper -p <BENCHMARK_NAME> -c <CONFIGURATION> -n <CORES>
+```
+
+and wait................
+
+## Editing the simulator
+
+I've created a cache policy stub at `TODO`, take a look at `TODO` for an example
+of a fully implemented policy.
+
+## License
+
+
+```
 This is the source code for the Sniper multicore simulator developed
 by the Performance Lab research group at Ghent University, Belgium.
 Please refer to the NOTICE file in the top level directory for
@@ -28,3 +69,4 @@ Simulation". Proceedings of the International Conference for High
 Performance Computing, Networking, Storage and Analysis (SC),
 pages 52:1--52:12, November 2011.
 http://dx.doi.org/10.1145/2063384.2063454
+```
