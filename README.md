@@ -32,8 +32,7 @@ and wait................
 
 ## Editing the simulator
 
-I've created a cache policy stub at `TODO`, take a look at `TODO` for an example
-of a fully implemented policy.
+I've created a cache policy stub at `common/core/memory_subsystem/cache/cache_set_bip.[h,cc]`.
 
 ## License
 
