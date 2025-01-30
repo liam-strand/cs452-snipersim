@@ -232,6 +232,8 @@ CacheSet::parsePolicyType(String policy)
       return CacheBase::SRRIP_QBS;
    if (policy == "random")
       return CacheBase::RANDOM;
+   if (policy == "bip")
+      return CacheBase::BIP;
 
    LOG_PRINT_ERROR("Unknown replacement policy %s", policy.c_str());
 }
