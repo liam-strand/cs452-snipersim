@@ -31,7 +31,7 @@ CacheSetBIP::getReplacementIndex(CacheCntlr *cntlr)
       if (!m_cache_block_info_array[i]->isValid())
       {
          // Mark our newly-inserted line as most-recently used
-         moveToMRU(i);
+         moveToBimodal(i);
          return i;
       }
    }
@@ -69,7 +69,7 @@ CacheSetBIP::getReplacementIndex(CacheCntlr *cntlr)
       else
       {
          // Mark our newly-inserted line as most-recently used
-         moveToMRU(index);
+         moveToBimodal(index);
          m_set_info->incrementAttempt(attempt);
          return index;
       }
