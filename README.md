@@ -32,7 +32,7 @@ and wait................
 
 ## Editing the simulator
 
-I've created a cache policy stub at `common/core/memory_subsystem/cache/cache_set_bip.[h,cc]`.
+I've created a cache policy stub at `common/core/memory_subsystem/cache/cache_set_bip.cc`.
 
 ## License
 
