@@ -168,7 +168,7 @@ CacheSet::createCacheSet(String cfgname, core_id_t core_id,
          return new CacheSetRandom(cache_type, associativity, blocksize);
 
       case CacheBase::BIP:
-         return new CacheSetBIP(cache_type, associativity, blocksize, dynamic_cast<CacheSetInfoLRU*>(set_info), getNumQBSAttempts(policy, cfgname, core_id));
+         return new CacheSetBIP(cache_type, associativity, blocksize, 32, dynamic_cast<CacheSetInfoLRU*>(set_info), getNumQBSAttempts(policy, cfgname, core_id));
 
       default:
          LOG_PRINT_ERROR("Unrecognized Cache Replacement Policy: %i",

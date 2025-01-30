@@ -6,9 +6,10 @@
 
 CacheSetBIP::CacheSetBIP(
       CacheBase::cache_t cache_type,
-      UInt32 associativity, UInt32 blocksize, CacheSetInfoLRU* set_info, UInt8 num_attempts)
+      UInt32 associativity, UInt32 blocksize, UInt32 inv_throttle, CacheSetInfoLRU* set_info, UInt8 num_attempts)
    : CacheSet(cache_type, associativity, blocksize)
    , m_num_attempts(num_attempts)
+   , m_inv_throttle(inv_throttle)
    , m_set_info(set_info)
 {
    m_lru_bits = new UInt8[m_associativity];
@@ -93,4 +94,26 @@ CacheSetBIP::moveToMRU(UInt32 accessed_index)
          m_lru_bits[i] ++;
    }
    m_lru_bits[accessed_index] = 0;
+}
+
+void
+CacheSetBIP::moveToLRU(UInt32 accessed_index)
+{
+   for (UInt32 i = 0; i < m_associativity; i++)
+   {
+      if (m_lru_bits[i] > m_lru_bits[accessed_index])
+         m_lru_bits[i] --;
+   }
+   m_lru_bits[accessed_index] = m_associativity - 1;
+}
+
+void
+CacheSetBIP::moveToBimodal(UInt32 accessed_index)
+{
+   static UInt32 insertions = 0;
+   if (insertions % m_inv_throttle == 0++) {
+      moveToMRU(accessed_index);
+   } else {
+      moveToLRU(accessed_index);
+   }
 }
