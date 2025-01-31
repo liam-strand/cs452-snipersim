@@ -2,7 +2,7 @@
 #include "log.h"
 #include "stats.h"
 
-// Implements LRU replacement, optionally augmented with Query-Based Selection [Jaleel et al., MICRO'10]
+// Implements LRU replacement with BIP insertion
 
 CacheSetBIP::CacheSetBIP(
       CacheBase::cache_t cache_type,
@@ -11,10 +11,13 @@ CacheSetBIP::CacheSetBIP(
    , m_num_attempts(num_attempts)
    , m_set_info(set_info)
    , m_inv_throttle(inv_throttle)
+   , m_gen(m_rd())
+   , m_distribution(0, inv_throttle)
 {
    m_lru_bits = new UInt8[m_associativity];
-   for (UInt32 i = 0; i < m_associativity; i++)
+   for (UInt32 i = 0; i < m_associativity; i++) {
       m_lru_bits[i] = i;
+   }
 }
 
 CacheSetBIP::~CacheSetBIP()
@@ -110,8 +113,7 @@ CacheSetBIP::moveToLRU(UInt32 accessed_index)
 void
 CacheSetBIP::moveToBimodal(UInt32 accessed_index)
 {
-   static UInt32 insertions = 0;
-   if (insertions++ % m_inv_throttle == 0) {
+   if (m_distribution(m_gen) == 0) {
       moveToMRU(accessed_index);
    } else {
       moveToLRU(accessed_index);
