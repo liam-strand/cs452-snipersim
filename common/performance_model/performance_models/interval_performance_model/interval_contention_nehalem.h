@@ -15,6 +15,15 @@ class IntervalContentionNehalem : public IntervalContention {
       uint64_t m_count_byport[8 /*MicroOp::UOP_PORT_SIZE*/];
       uint64_t m_cpContrByPort[DynamicMicroOpNehalem::UOP_PORT_SIZE];
 
+      // Pooled functional units (configurable): generic-int uops share
+      // m_num_int_alu ALUs, FP add/sub/mul/div uops share m_num_fp_fu units
+      uint64_t m_num_int_alu;
+      uint64_t m_num_fp_fu;
+      uint64_t m_count_int;
+      uint64_t m_count_fp;
+      uint64_t m_cpContrInt;
+      uint64_t m_cpContrFp;
+
    public:
       IntervalContentionNehalem(const Core *core, const CoreModel *core_model);
 
