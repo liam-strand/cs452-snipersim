@@ -59,6 +59,7 @@ riscv/riscv-tools
 riscv/rv8
 riscv/Speckle
 xed_kit
+xed
 mbuild
 sde_kit
 capstone
