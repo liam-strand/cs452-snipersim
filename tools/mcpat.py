@@ -449,7 +449,9 @@ def edit_XML(statsobj, stats, cfg):
           raise ValueError('Unknown DVFS domain %s' % domain)
       issue_width = long(sniper_config.get_config(cfg, 'perf_model/core/interval_timer/dispatch_width', core))
       peak_issue_width = long(long(sniper_config.get_config(cfg, 'perf_model/core/interval_timer/dispatch_width', core)) * 1.5)
-      ALU_per_core = peak_issue_width
+      num_int_alu = long(sniper_config.get_config(cfg, 'perf_model/core/interval_timer/num_int_alu', core))
+      num_fp_fu   = long(sniper_config.get_config(cfg, 'perf_model/core/interval_timer/num_fp_fu', core))
+      ALU_per_core = num_int_alu # power tracks the perf-model knob (was peak_issue_width)
       window_size = int(sniper_config.get_config(cfg, "perf_model/core/interval_timer/window_size", core))
       if sniper_config.get_config(cfg, "perf_model/core/type", core) == 'rob' and sniper_config.get_config_bool(cfg, "perf_model/core/rob_timer/in_order", core):
         machineType = 1 # in-order
@@ -497,6 +499,10 @@ def edit_XML(statsobj, stats, cfg):
             template[i][0] = template[i][0] % peak_issue_width
           elif template[i][1][0]=="ALU_per_core":
             template[i][0] = template[i][0] % ALU_per_core
+          elif template[i][1][0]=="FPU_per_core":
+            template[i][0] = template[i][0] % num_fp_fu
+          elif template[i][1][0]=="fp_issue_width":
+            template[i][0] = template[i][0] % num_fp_fu
           elif template[i][1][0]=="window_size":
             template[i][0] = template[i][0] % window_size
           elif template[i][1][0]=="machineType":
@@ -863,7 +869,7 @@ def readTemplate(ncores, num_l2s, private_l2s, num_l3s, technology_node):
     template.append(["\t\t\t\tas in the complexity effective proccessors paper; issue_width==dispatch_width -->",""])
     template.append(["\t\t\t<param name=\"commit_width\" value=\"%u\"/>",["issue_width","cfg",iCount]]) #assuming the issue and commit widths are equal
     template.append(["\t\t\t<!-- commit_width determins the number of ports of register files -->",""])
-    template.append(["\t\t\t<param name=\"fp_issue_width\" value=\"2\"/>",""])
+    template.append(["\t\t\t<param name=\"fp_issue_width\" value=\"%u\"/>",["fp_issue_width","cfg",iCount]])
     template.append(["\t\t\t<param name=\"prediction_width\" value=\"1\"/>",""])  #Check whether it can be extracted
     template.append(["\t\t\t<!-- number of branch instructions can be predicted simultannouesl-->",""])
     template.append(["\t\t\t<!-- Current version of McPAT does not distinguish int and floating point pipelines",""])
@@ -878,7 +884,7 @@ def readTemplate(ncores, num_l2s, private_l2s, num_l3s, technology_node):
     template.append(["\t\t\t<param name=\"MUL_per_core\" value=\"1\"/>",""])
     template.append(["\t\t\t<!-- In superscalar processors, usually all ALU are not the same. certain inst. can only",""])
     template.append(["\t\t\tbe processed by certain ALU. However, current McPAT does not consider this subtle difference -->",""])
-    template.append(["\t\t\t<param name=\"FPU_per_core\" value=\"2\"/>",""])
+    template.append(["\t\t\t<param name=\"FPU_per_core\" value=\"%u\"/>",["FPU_per_core","cfg",iCount]])
     template.append(["\t\t\t<!-- buffer between IF and ID stage -->",""])
     template.append(["\t\t\t<param name=\"instruction_buffer_size\" value=\"32\"/>",""])
     template.append(["\t\t\t<!-- buffer between ID and sche/exe stage -->",""])
